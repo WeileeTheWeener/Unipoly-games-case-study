@@ -1,45 +1,42 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
 [RequireComponent(typeof(Camera))]
-public class CameraFollowComponent : MonoBehaviour
+public class CameraFollowComponent : NetworkBehaviour
 {
-    [SerializeField] GameObject objectToFollow;
-    [SerializeField] Vector3 offset;
-    [SerializeField] float followSpeed;
-    [SerializeField] float rotationSpeed;
+    //public GameObject objectToFollow;
+    [Networked] public NetworkObject objectToFollow { get; set; }
+    [Networked] [SerializeField] Vector3 offset { get; set; }
+    [Networked] [SerializeField] float followSpeed { get; set; }
+    [Networked] [SerializeField] float rotationSpeed { get; set; }
+    [Networked] public int cameraDepth { get; set; }
+
     private Vector3 velocity;
     private Transform cameraPivot;
 
     private void Start()
     {
+        GetComponent<Camera>().depth = cameraDepth;
+    }
+    public void FollowObject()
+    {     
         cameraPivot = transform.parent;
-    }
-    void FixedUpdate()
-    {
-        FollowObject();
-        
-    }
-    private void LateUpdate()
-    {
-        RotateAroundObject();
-    }
-    void FollowObject()
-    {
-        Vector3 positionToLerp = new Vector3(objectToFollow.transform.position.x, objectToFollow.transform.position.y, 
+        Vector3 positionToLerp = new Vector3(objectToFollow.transform.position.x, objectToFollow.transform.position.y,
             objectToFollow.transform.position.z) + offset;
-        cameraPivot.position = Vector3.SmoothDamp(cameraPivot.position, positionToLerp, ref velocity, followSpeed);
+        cameraPivot.transform.position = Vector3.SmoothDamp(cameraPivot.position, positionToLerp, ref velocity, followSpeed);
     }
-    void RotateAroundObject()
+    public void RotateAroundObject(float mouseInput)
     {
         //update camera pivot position
         cameraPivot.transform.position = objectToFollow.transform.position;
-        cameraPivot.RotateAround(objectToFollow.transform.position, Vector3.up, Input.GetAxis("Mouse X") * rotationSpeed);
-        
+        //rotate around the object
+        cameraPivot.RotateAround(objectToFollow.transform.position, Vector3.up, mouseInput * rotationSpeed);
+
+
     }
 
 }

@@ -1,20 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using Fusion;
 using UnityEngine;
 
-public class PlayerInteractionComponent : MonoBehaviour
+public class PlayerInteractionComponent : NetworkBehaviour
 {
-    private void Update()
+    public bool pickupPressed;
+
+    public override void FixedUpdateNetwork()
     {
-        HandleObjectDrop();
+        if (GetInput(out NetworkInputData data))
+        {
+            HandleObjectDrop(data.isReleaseButtonPressed);
+            pickupPressed = data.isCollectButtonPressed;
+        }
     }
-    private void HandleObjectDrop()
+    public void HandleObjectDrop(bool dropPressed)
     {
         if (gameObject.GetComponentInChildren<CollectibleComponent>() != null)
         {
             CollectibleComponent collectible = gameObject.GetComponentInChildren<CollectibleComponent>();
-            if (Input.GetKeyDown(KeyCode.G) && !collectible.isCollectible)
+
+            if (dropPressed && !collectible.isCollectible)
             {
                 collectible.DropCollectible();
             }
@@ -27,7 +32,7 @@ public class PlayerInteractionComponent : MonoBehaviour
         {
             CollectibleComponent collectible = other.gameObject.GetComponent<CollectibleComponent>();
 
-            if(Input.GetKeyDown(KeyCode.E) && collectible.isCollectible)
+            if(pickupPressed && collectible.isCollectible)
             {
                 collectible.Interact(gameObject);
             }

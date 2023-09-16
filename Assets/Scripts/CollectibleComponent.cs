@@ -1,17 +1,19 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectibleComponent : MonoBehaviour,IInteractible
 {
-    public bool isCollectible;
-    Transform parentBeforeCollected;
-    Transform parentAfterCollected;
+    [Networked] public bool isCollectible { get; set; }
+    [Networked] Transform parentBeforeCollected { get; set; }
+    [Networked] Transform parentAfterCollected { get; set; }
     Rigidbody rb;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         parentBeforeCollected = transform.parent;
+        isCollectible = true;
     }
     public void Interact(GameObject triggeredBy)
     {
