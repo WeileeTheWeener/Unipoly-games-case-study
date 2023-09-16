@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  pickupPressed: 0
 --- !u!114 &-7427295093396308175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 2
-  movementVector: {x: 0, y: 0, z: 0}
   _movementSpeed: 30
   _jumpForce: 20
   _fallingForce: 20

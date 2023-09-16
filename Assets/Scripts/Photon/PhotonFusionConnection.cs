@@ -60,8 +60,9 @@ public class PhotonFusionConnection : NetworkBehaviour, INetworkRunnerCallbacks
         //spawn a collectible object
         if(Runner.IsServer)
         {
-            NetworkObject networkCollectibleObject = Runner.Spawn(collectibleCubePrefab, Vector3.zero, Quaternion.identity);
-            NetworkObject houseObject = Runner.Spawn(housePrefab, new Vector3(-2f,0f,7f), Quaternion.identity);
+            Runner.Spawn(collectibleCubePrefab, Vector3.zero, Quaternion.identity);
+            Runner.Spawn(collectibleCubePrefab, new Vector3(-2f, 0f, 7f), Quaternion.identity);
+            Runner.Spawn(housePrefab, new Vector3(-2f,0f,7f), Quaternion.identity);
         }
     }
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
