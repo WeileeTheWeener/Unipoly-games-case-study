@@ -15,9 +15,9 @@ public class PlayerInteractionComponent : NetworkBehaviour
     }
     public void HandleObjectDrop(bool dropPressed)
     {
-        if (gameObject.GetComponentInChildren<CollectibleComponent>() != null)
+        if (gameObject.GetComponentInChildren<InteractableComponent>() != null)
         {
-            CollectibleComponent collectible = gameObject.GetComponentInChildren<CollectibleComponent>();
+            InteractableComponent collectible = gameObject.GetComponentInChildren<InteractableComponent>();
 
             if (dropPressed && !collectible.isCollectible)
             {
@@ -28,15 +28,24 @@ public class PlayerInteractionComponent : NetworkBehaviour
     private void OnTriggerStay(Collider other)
     {
         //can pickup collectible if player is inside its collider
-        if(other.gameObject.GetComponent<CollectibleComponent>() != null )
+        if(other.gameObject.GetComponent<InteractableComponent>() != null)
         {
-            CollectibleComponent collectible = other.gameObject.GetComponent<CollectibleComponent>();
+            InteractableComponent collectible = other.gameObject.GetComponent<InteractableComponent>();
 
             if(pickupPressed && collectible.isCollectible)
             {
                 collectible.Interact(gameObject);
             }
             
+        }
+        if (other.gameObject.GetComponent<DoorComponent>() != null)
+        {
+            DoorComponent door = other.gameObject.GetComponent<DoorComponent>();
+
+            if (pickupPressed)
+            {
+                door.Interact(gameObject);
+            }
 
         }
     }

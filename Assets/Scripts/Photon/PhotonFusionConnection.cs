@@ -14,6 +14,7 @@ public class PhotonFusionConnection : NetworkBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef playerPrefab;
     [SerializeField] private NetworkPrefabRef cameraPivotPrefab;
     [SerializeField] private NetworkPrefabRef collectibleCubePrefab;
+    [SerializeField] private NetworkPrefabRef housePrefab;
     private Dictionary<PlayerRef, NetworkObject> spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
     public Dictionary<PlayerRef, NetworkObject> spawnedCameras = new Dictionary<PlayerRef, NetworkObject>();
 
@@ -22,11 +23,18 @@ public class PhotonFusionConnection : NetworkBehaviour, INetworkRunnerCallbacks
     {
         if (networkRunner == null)
         {
-            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
+            GUIStyle myButtonStyle = new GUIStyle(GUI.skin.button);
+            myButtonStyle.fontSize = 24;
+            GUIStyle textStyle = new GUIStyle();
+            textStyle.fontSize = 36;
+
+            GUI.Label(new Rect(400, 0, 100, 20), "Welcome!", textStyle);
+
+            if (GUI.Button(new Rect(0, 0, 400, 40), "Host",myButtonStyle))
             {
                 StartGame(GameMode.Host);
             }
-            if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
+            if (GUI.Button(new Rect(0, 40, 400, 40), "Join",myButtonStyle))
             {
                 StartGame(GameMode.Client);
             }
@@ -53,6 +61,7 @@ public class PhotonFusionConnection : NetworkBehaviour, INetworkRunnerCallbacks
         if(Runner.IsServer)
         {
             NetworkObject networkCollectibleObject = Runner.Spawn(collectibleCubePrefab, Vector3.zero, Quaternion.identity);
+            NetworkObject houseObject = Runner.Spawn(housePrefab, new Vector3(-2f,0f,7f), Quaternion.identity);
         }
     }
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)

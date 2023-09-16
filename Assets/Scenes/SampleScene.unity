@@ -560,6 +560,8 @@ MonoBehaviour:
     RawGuidValue: fed3b81ccad0c9b4db617c71076e02d4
   collectibleCubePrefab:
     RawGuidValue: c852e94191a1c2945924cd91878b5fb7
+  housePrefab:
+    RawGuidValue: c6d8651206133ad4492c704d2e9852a0
 --- !u!4 &2056655620
 Transform:
   m_ObjectHideFlags: 0
